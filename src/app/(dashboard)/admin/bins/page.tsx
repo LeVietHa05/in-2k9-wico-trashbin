@@ -19,6 +19,7 @@ const LocationPicker = dynamic(
 export default function AdminBinsPage() {
   const [bins, setBins] = useState<BinData[]>([])
   const [showForm, setShowForm] = useState(false)
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [form, setForm] = useState({
     name: "",
     lat: "",
@@ -26,30 +27,64 @@ export default function AdminBinsPage() {
     address: "",
   })
 
-  useEffect(() => {
+  const loadBins = () => {
     fetch("/api/bins")
       .then((r) => (r.ok ? r.json() : []))
       .then((data) => Array.isArray(data) && setBins(data))
-  }, [])
+  }
 
-  async function handleCreate(e: React.FormEvent) {
-    e.preventDefault()
-    const res = await fetch("/api/bins", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: form.name,
-        lat: parseFloat(form.lat),
-        lng: parseFloat(form.lng),
-        address: form.address,
-      }),
+  useEffect(loadBins, [])
+
+  function resetForm() {
+    setForm({ name: "", lat: "", lng: "", address: "" })
+    setShowForm(false)
+    setEditingId(null)
+  }
+
+  function startEdit(bin: BinData) {
+    setEditingId(bin.id)
+    setShowForm(false)
+    setForm({
+      name: bin.name,
+      lat: bin.lat.toString(),
+      lng: bin.lng.toString(),
+      address: bin.address,
     })
+  }
 
-    if (res.ok) {
-      const newBin = await res.json()
-      setBins((prev) => [...prev, newBin])
-      setShowForm(false)
-      setForm({ name: "", lat: "", lng: "", address: "" })
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+
+    if (editingId) {
+      const res = await fetch(`/api/bins/${editingId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          lat: parseFloat(form.lat),
+          lng: parseFloat(form.lng),
+          address: form.address,
+        }),
+      })
+      if (res.ok) {
+        resetForm()
+        loadBins()
+      }
+    } else {
+      const res = await fetch("/api/bins", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          lat: parseFloat(form.lat),
+          lng: parseFloat(form.lng),
+          address: form.address,
+        }),
+      })
+      if (res.ok) {
+        resetForm()
+        loadBins()
+      }
     }
   }
 
@@ -70,15 +105,18 @@ export default function AdminBinsPage() {
           </h1>
           <p className="text-sm text-gray-500">{bins.length} thùng rác</p>
         </div>
-        <Button onClick={() => setShowForm(!showForm)}>
+        <Button onClick={() => { resetForm(); setShowForm(!showForm) }}>
           {showForm ? "Hủy" : "+ Thêm thùng rác"}
         </Button>
       </div>
 
-      {showForm && (
+      {(showForm || editingId) && (
         <Card>
           <CardContent className="p-6">
-            <form onSubmit={handleCreate} className="space-y-4">
+            <h3 className="font-semibold text-gray-900 mb-4">
+              {editingId ? "Chỉnh sửa thùng rác" : "Thêm thùng rác mới"}
+            </h3>
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <Input
                   label="Tên thùng rác"
@@ -103,7 +141,12 @@ export default function AdminBinsPage() {
               <div className="flex gap-2 text-sm text-gray-500">
                 <span>📍 {form.lat || "---"}, {form.lng || "---"}</span>
               </div>
-              <Button type="submit">Lưu</Button>
+              <div className="flex gap-3">
+                <Button type="submit">{editingId ? "Cập nhật" : "Lưu"}</Button>
+                <Button type="button" variant="secondary" onClick={resetForm}>
+                  Hủy
+                </Button>
+              </div>
             </form>
           </CardContent>
         </Card>
@@ -143,6 +186,13 @@ export default function AdminBinsPage() {
                       </p>
                     </div>
                   )}
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => startEdit(bin)}
+                  >
+                    Sửa
+                  </Button>
                   <Button
                     variant="danger"
                     size="sm"

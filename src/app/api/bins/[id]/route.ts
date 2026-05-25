@@ -39,7 +39,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
-  if (!session?.user) {
+  if (!session?.user || (session.user as { role?: string }).role !== "ADMIN") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
@@ -48,7 +48,12 @@ export async function PUT(
 
   const bin = await prisma.bin.update({
     where: { id },
-    data: body,
+    data: {
+      name: body.name,
+      address: body.address,
+      lat: body.lat,
+      lng: body.lng,
+    },
   })
 
   return NextResponse.json(bin)
