@@ -1,11 +1,20 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 import { BinData } from "@/types"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
+
+const LocationPicker = dynamic(
+  () =>
+    import("@/components/map/LocationPicker").then((m) => ({
+      default: m.LocationPicker,
+    })),
+  { ssr: false }
+)
 
 export default function AdminBinsPage() {
   const [bins, setBins] = useState<BinData[]>([])
@@ -69,38 +78,32 @@ export default function AdminBinsPage() {
       {showForm && (
         <Card>
           <CardContent className="p-6">
-            <form onSubmit={handleCreate} className="grid grid-cols-2 gap-4">
-              <Input
-                label="Tên thùng rác"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required
-              />
-              <Input
-                label="Địa chỉ"
-                value={form.address}
-                onChange={(e) => setForm({ ...form, address: e.target.value })}
-                required
-              />
-              <Input
-                label="Vĩ độ (Lat)"
-                type="number"
-                step="any"
-                value={form.lat}
-                onChange={(e) => setForm({ ...form, lat: e.target.value })}
-                required
-              />
-              <Input
-                label="Kinh độ (Lng)"
-                type="number"
-                step="any"
-                value={form.lng}
-                onChange={(e) => setForm({ ...form, lng: e.target.value })}
-                required
-              />
-              <div className="col-span-2">
-                <Button type="submit">Lưu</Button>
+            <form onSubmit={handleCreate} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  label="Tên thùng rác"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  required
+                />
+                <Input
+                  label="Địa chỉ"
+                  value={form.address}
+                  onChange={(e) => setForm({ ...form, address: e.target.value })}
+                  required
+                />
               </div>
+              <LocationPicker
+                lat={form.lat ? parseFloat(form.lat) : null}
+                lng={form.lng ? parseFloat(form.lng) : null}
+                onLocationSelect={(lat, lng) =>
+                  setForm({ ...form, lat: lat.toString(), lng: lng.toString() })
+                }
+              />
+              <div className="flex gap-2 text-sm text-gray-500">
+                <span>📍 {form.lat || "---"}, {form.lng || "---"}</span>
+              </div>
+              <Button type="submit">Lưu</Button>
             </form>
           </CardContent>
         </Card>
