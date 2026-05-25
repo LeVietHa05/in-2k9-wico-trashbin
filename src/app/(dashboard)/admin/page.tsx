@@ -24,6 +24,24 @@ export default function AdminDashboard() {
       .then((data) => Array.isArray(data) && setAlerts(data))
   }, [])
 
+  const markRead = async (alertId: string) => {
+    const res = await fetch("/api/alerts", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ alertId }),
+    })
+    if (res.ok) {
+      setAlerts((prev) =>
+        prev.map((a) => (a.id === alertId ? { ...a, isRead: true } : a))
+      )
+    }
+  }
+
+  const markAllRead = async () => {
+    const unread = alerts.filter((a) => !a.isRead)
+    await Promise.all(unread.map((a) => markRead(a.id)))
+  }
+
   const totalCo2 = bins.reduce(
     (sum, b) => sum + (b.latestSensor?.co2 ?? 0), 0
   )
@@ -83,7 +101,7 @@ export default function AdminDashboard() {
             </h2>
           </CardHeader>
           <CardContent>
-            <AlertBanner alerts={alerts} />
+            <AlertBanner alerts={alerts} onMarkRead={markRead} onMarkAllRead={markAllRead} />
           </CardContent>
         </Card>
       )}

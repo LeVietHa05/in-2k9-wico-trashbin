@@ -41,6 +41,24 @@ export default function UserDashboard() {
 
   useEffect(loadData, [])
 
+  const markRead = async (alertId: string) => {
+    const res = await fetch("/api/alerts", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ alertId }),
+    })
+    if (res.ok) {
+      setAlerts((prev) =>
+        prev.map((a) => (a.id === alertId ? { ...a, isRead: true } : a))
+      )
+    }
+  }
+
+  const markAllRead = async () => {
+    const unread = alerts.filter((a) => !a.isRead)
+    await Promise.all(unread.map((a) => markRead(a.id)))
+  }
+
   const handleLocationSelect = (lat: number, lng: number) => {
     setForm((prev) => ({ ...prev, lat: lat.toString(), lng: lng.toString() }))
   }
@@ -117,7 +135,7 @@ export default function UserDashboard() {
             </h2>
           </CardHeader>
           <CardContent>
-            <AlertBanner alerts={alerts} />
+            <AlertBanner alerts={alerts} onMarkRead={markRead} onMarkAllRead={markAllRead} />
           </CardContent>
         </Card>
       )}
