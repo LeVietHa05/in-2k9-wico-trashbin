@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 export default function HistoryPage() {
   const [scans, setScans] = useState<ScanResult[]>([])
   const [alerts, setAlerts] = useState<AlertData[]>([])
+  const [expandedScan, setExpandedScan] = useState<string | null>(null)
 
   useEffect(() => {
     fetch("/api/scan/history")
@@ -37,30 +38,49 @@ export default function HistoryPage() {
           ) : (
             <div className="space-y-3">
               {scans.map((scan) => (
-                <div
-                  key={scan.id}
-                  className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
-                >
-                  <span className="text-2xl">
-                    {scan.result === "Hữu cơ" ? "🌿" : "♻️"}
-                  </span>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <Badge
-                        variant={
-                          scan.result === "Hữu cơ" ? "success" : "warning"
-                        }
-                      >
-                        {scan.result}
-                      </Badge>
-                      <span className="text-xs text-gray-500">
-                        {(scan.confidence * 100).toFixed(1)}%
-                      </span>
+                <div key={scan.id}>
+                  <button
+                    onClick={() =>
+                      setExpandedScan(
+                        expandedScan === scan.id ? null : scan.id
+                      )
+                    }
+                    className="w-full flex items-center gap-3 p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors text-left"
+                  >
+                    <span className="text-2xl">
+                      {scan.result === "Hữu cơ" ? "🌿" : "♻️"}
+                    </span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <Badge
+                          variant={
+                            scan.result === "Hữu cơ" ? "success" : "warning"
+                          }
+                        >
+                          {scan.result}
+                        </Badge>
+                        <span className="text-xs text-gray-500">
+                          {(scan.confidence * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        {new Date(scan.createdAt).toLocaleString("vi-VN")}
+                      </p>
                     </div>
-                    <p className="text-xs text-gray-400 mt-0.5">
-                      {new Date(scan.createdAt).toLocaleString("vi-VN")}
-                    </p>
-                  </div>
+                    <span className="text-sm text-gray-400">
+                      {expandedScan === scan.id ? "▲" : "▼"}
+                    </span>
+                  </button>
+                  {expandedScan === scan.id && (
+                    <div className="mt-2 p-3 bg-white border border-gray-200 rounded-lg">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={scan.imageUrl}
+                        alt="Rác đã phân loại"
+                        className="w-full max-h-80 object-contain rounded-lg"
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
