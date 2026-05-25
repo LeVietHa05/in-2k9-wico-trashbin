@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  name     String
+  password String
+  role     String   @default("USER")
+  bins     Bin[]
+  scans    Scan[]
+  alerts   Alert[]
+  createdAt DateTime @default(now())
+}
+
+model Bin {
+  id       String   @id @default(cuid())
+  name     String
+  lat      Float
+  lng      Float
+  address  String
+  userId   String
+  user     User     @relation(fields: [userId], references: [id])
+  sensors  Sensor[]
+  scans    Scan[]
+  alerts   Alert[]
+  createdAt DateTime @default(now())
+}
+
+model Sensor {
+  id        String   @id @default(cuid())
+  binId     String
+  bin       Bin      @relation(fields: [binId], references: [id])
+  co2       Float
+  methane   Float
+  timestamp DateTime @default(now())
+}
+
+model Scan {
+  id         String   @id @default(cuid())
+  binId      String?
+  bin        Bin?     @relation(fields: [binId], references: [id])
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  imageUrl   String
+  result     String
+  confidence Float
+  createdAt  DateTime @default(now())
+}
+
+model Alert {
+  id        String   @id @default(cuid())
+  binId     String
+  bin       Bin      @relation(fields: [binId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
