@@ -99,14 +99,14 @@ export default function AdminBinsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-start sm:items-center justify-between gap-2">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
             {L.adminBinsTitle}
           </h1>
           <p className="text-sm text-gray-500">{L.adminBinsCount(bins.length)}</p>
         </div>
-        <Button onClick={() => { resetForm(); setShowForm(!showForm) }}>
+        <Button onClick={() => { resetForm(); setShowForm(!showForm) }} size="sm" className="shrink-0">
           {L.adminBinsAddBtn(showForm)}
         </Button>
       </div>
@@ -118,7 +118,7 @@ export default function AdminBinsPage() {
               {L.adminBinsFormTitle(!!editingId)}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Input
                   label={L.adminBinsName}
                   value={form.name}
@@ -157,9 +157,9 @@ export default function AdminBinsPage() {
         {bins.map((bin) => (
           <Card key={bin.id}>
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-semibold text-gray-900">
                       {bin.name}
                     </h3>
@@ -169,12 +169,12 @@ export default function AdminBinsPage() {
                         <Badge variant="danger">{L.adminBinsAlertBadge}</Badge>
                       )}
                   </div>
-                  <p className="text-sm text-gray-500">{bin.address}</p>
+                  <p className="text-sm text-gray-500 truncate">{bin.address}</p>
                   <p className="text-xs text-gray-400 mt-1">
                     {bin.lat}, {bin.lng}
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3 flex-wrap shrink-0">
                   {bin.latestSensor && (
                     <div className="text-right text-sm">
                       <p>

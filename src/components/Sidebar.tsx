@@ -18,22 +18,31 @@ const adminLinks = [
   { href: "/admin/alerts", label: L.navAlerts, icon: "🔔" },
 ]
 
-export function Sidebar() {
+export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname()
   const { data: session } = useSession()
   const role = (session?.user)?.role
   const isAdmin = role === "ADMIN"
   const links = isAdmin ? adminLinks : userLinks
 
-  return (
-    <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
-      <div className="p-4 border-b border-gray-100">
-        <h1 className="text-lg font-bold text-emerald-700">
-          🌱 EcoBin Monitor
-        </h1>
-        <p className="text-xs text-gray-500 mt-0.5">
-          {L.navSubtitle}
-        </p>
+  function handleNav() {
+    onClose?.()
+  }
+
+  const sidebarContent = (
+    <>
+      <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+        <div>
+          <h1 className="text-lg font-bold text-emerald-700">
+            🌱 EcoBin Monitor
+          </h1>
+          <p className="text-xs text-gray-500 mt-0.5">
+            {L.navSubtitle}
+          </p>
+        </div>
+        <button onClick={onClose} className="lg:hidden text-gray-400 hover:text-gray-600 text-xl">
+          ✕
+        </button>
       </div>
 
       <nav className="flex-1 p-3 space-y-1">
@@ -43,6 +52,7 @@ export function Sidebar() {
             <Link
               key={link.href}
               href={link.href}
+              onClick={handleNav}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
                   ? "bg-emerald-50 text-emerald-700"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
@@ -76,6 +86,26 @@ export function Sidebar() {
           {L.navSignOut}
         </button>
       </div>
-    </aside>
+    </>
+  )
+
+  return (
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/30 z-[1001] lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      {/* Mobile sidebar (off-canvas) */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-[1002] w-64 bg-white shadow-xl flex flex-col transform transition-transform duration-200 lg:static lg:translate-x-0 lg:shadow-none lg:z-auto ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {sidebarContent}
+      </aside>
+    </>
   )
 }

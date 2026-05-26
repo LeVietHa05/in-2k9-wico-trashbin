@@ -39,7 +39,7 @@ export function LocationPicker({
 
   return (
     <div className="space-y-2">
-      <div className="h-[300px] rounded-xl overflow-hidden border border-gray-200">
+      <div className="h-[200px] sm:h-[300px] rounded-xl overflow-hidden border border-gray-200">
         <MapContainer
           center={center}
           zoom={15}

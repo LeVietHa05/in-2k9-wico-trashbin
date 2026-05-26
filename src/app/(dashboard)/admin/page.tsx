@@ -67,7 +67,7 @@ export default function AdminDashboard() {
         </p>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-gray-500">{L.adminDashboardTotalBins}</p>
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
           </div>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="h-[350px]">
+          <div className="h-[250px] sm:h-[350px]">
             <BinMap
               bins={bins}
               selectedId={selectedBinId}

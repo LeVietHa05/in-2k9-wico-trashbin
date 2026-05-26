@@ -35,7 +35,7 @@ export default function AdminUsersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
           {L.adminUsersTitle}
         </h1>
         <p className="text-sm text-gray-500">
@@ -44,8 +44,8 @@ export default function AdminUsersPage() {
       </div>
 
       <Card>
-        <CardContent className="p-0">
-          <table className="w-full">
+        <CardContent className="p-0 overflow-x-auto">
+          <table className="w-full min-w-[500px]">
             <thead>
               <tr className="border-b border-gray-100">
                 <th className="text-left p-4 text-sm font-medium text-gray-500">

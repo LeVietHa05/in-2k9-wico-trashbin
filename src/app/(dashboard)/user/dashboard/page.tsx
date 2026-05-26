@@ -100,14 +100,14 @@ export default function UserDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-start sm:items-center justify-between gap-2">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{L.userDashboardTitle}</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{L.userDashboardTitle}</h1>
           <p className="text-sm text-gray-500">
             {L.userDashboardWelcome(session?.user?.name || "")}
           </p>
         </div>
-        <Button onClick={() => setShowForm(!showForm)} variant="secondary">
+        <Button onClick={() => setShowForm(!showForm)} variant="secondary" size="sm" className="shrink-0">
           {L.userDashboardAddBtn(showForm)}
         </Button>
       </div>
@@ -116,7 +116,7 @@ export default function UserDashboard() {
         <Card>
           <CardContent className="p-6">
             <form onSubmit={handleCreate} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Input label={L.userDashboardBinName} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
                 <Input label={L.userDashboardAddress} value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} required />
               </div>
@@ -166,7 +166,7 @@ export default function UserDashboard() {
               </div>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="h-[350px]">
+              <div className="h-[250px] sm:h-[350px]">
                 <BinMap
                   bins={bins}
                   selectedId={selectedBinId}
