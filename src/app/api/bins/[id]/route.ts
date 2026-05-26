@@ -17,8 +17,8 @@ export async function GET(
     where: { id },
     include: {
       sensors: {
-        orderBy: { timestamp: "desc" },
-        take: 20,
+        orderBy: { timestamp: "asc" },
+        take: 50,
       },
       alerts: {
         orderBy: { createdAt: "desc" },

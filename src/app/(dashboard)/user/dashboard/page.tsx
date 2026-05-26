@@ -15,6 +15,11 @@ const BinMap = dynamic(
   { ssr: false }
 )
 
+const BinDetail = dynamic(
+  () => import("@/components/sensors/BinDetail").then((m) => ({ default: m.BinDetail })),
+  { ssr: false }
+)
+
 const LocationPicker = dynamic(
   () =>
     import("@/components/map/LocationPicker").then((m) => ({
@@ -28,6 +33,7 @@ export default function UserDashboard() {
   const [bins, setBins] = useState<BinData[]>([])
   const [alerts, setAlerts] = useState<AlertData[]>([])
   const [showForm, setShowForm] = useState(false)
+  const [selectedBinId, setSelectedBinId] = useState<string | null>(null)
   const [form, setForm] = useState({ name: "", lat: "", lng: "", address: "" })
 
   const loadData = () => {
@@ -141,19 +147,42 @@ export default function UserDashboard() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 space-y-4">
           <Card>
             <CardHeader>
-              <h2 className="font-semibold text-gray-900">
-                Bản đồ thùng rác
-              </h2>
+              <div className="flex items-center justify-between">
+                <h2 className="font-semibold text-gray-900">
+                  Bản đồ thùng rác
+                </h2>
+                {selectedBinId && (
+                  <button
+                    onClick={() => setSelectedBinId(null)}
+                    className="text-xs text-gray-400 hover:text-gray-600"
+                  >
+                    Bỏ chọn
+                  </button>
+                )}
+              </div>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="h-[400px]">
-                <BinMap bins={bins} />
+              <div className="h-[350px]">
+                <BinMap
+                  bins={bins}
+                  selectedId={selectedBinId}
+                  onBinSelect={(bin) =>
+                    setSelectedBinId(bin ? bin.id : null)
+                  }
+                />
               </div>
             </CardContent>
           </Card>
+
+          {selectedBinId && (
+            <BinDetail
+              binId={selectedBinId}
+              onClose={() => setSelectedBinId(null)}
+            />
+          )}
         </div>
 
         <div className="space-y-6">

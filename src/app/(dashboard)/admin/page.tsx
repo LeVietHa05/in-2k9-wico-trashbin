@@ -11,9 +11,15 @@ const BinMap = dynamic(
   { ssr: false }
 )
 
+const BinDetail = dynamic(
+  () => import("@/components/sensors/BinDetail").then((m) => ({ default: m.BinDetail })),
+  { ssr: false }
+)
+
 export default function AdminDashboard() {
   const [bins, setBins] = useState<BinData[]>([])
   const [alerts, setAlerts] = useState<AlertData[]>([])
+  const [selectedBinId, setSelectedBinId] = useState<string | null>(null)
 
   useEffect(() => {
     fetch("/api/bins")
@@ -108,16 +114,37 @@ export default function AdminDashboard() {
 
       <Card>
         <CardHeader>
-          <h2 className="font-semibold text-gray-900">
-            Bản đồ các thùng rác
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="font-semibold text-gray-900">
+              Bản đồ các thùng rác
+            </h2>
+            {selectedBinId && (
+              <button
+                onClick={() => setSelectedBinId(null)}
+                className="text-xs text-gray-400 hover:text-gray-600"
+              >
+                Bỏ chọn
+              </button>
+            )}
+          </div>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="h-[450px]">
-            <BinMap bins={bins} />
+          <div className="h-[350px]">
+            <BinMap
+              bins={bins}
+              selectedId={selectedBinId}
+              onBinSelect={(bin) => setSelectedBinId(bin ? bin.id : null)}
+            />
           </div>
         </CardContent>
       </Card>
+
+      {selectedBinId && (
+        <BinDetail
+          binId={selectedBinId}
+          onClose={() => setSelectedBinId(null)}
+        />
+      )}
     </div>
   )
 }
