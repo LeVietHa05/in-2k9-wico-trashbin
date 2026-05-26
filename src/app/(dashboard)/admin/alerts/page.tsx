@@ -5,6 +5,7 @@ import { AlertData } from "@/types"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { L } from "@/lib/lang"
 
 export default function AdminAlertsPage() {
   const [alerts, setAlerts] = useState<AlertData[]>([])
@@ -40,14 +41,14 @@ export default function AdminAlertsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Cảnh báo</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{L.adminAlertsTitle}</h1>
           <p className="text-sm text-gray-500">
-            {alerts.length} cảnh báo ({unread} chưa đọc)
+            {L.adminAlertsCount(alerts.length, unread)}
           </p>
         </div>
         {unread > 0 && (
           <Button variant="secondary" onClick={markAllRead}>
-            Đánh dấu tất cả đã đọc
+            {L.adminAlertsMarkAllRead}
           </Button>
         )}
       </div>
@@ -68,7 +69,7 @@ export default function AdminAlertsPage() {
                     <p className="text-sm font-medium text-gray-900">
                       {alert.message}
                     </p>
-                    {!alert.isRead && <Badge variant="warning">Mới</Badge>}
+                    {!alert.isRead && <Badge variant="warning">{L.adminAlertsNew}</Badge>}
                   </div>
                   <div className="flex items-center gap-3 mt-1">
                     <Badge
@@ -86,7 +87,7 @@ export default function AdminAlertsPage() {
                     </Badge>
                     <span className="text-xs text-gray-400">
                       {alert.bin?.name} &middot;{" "}
-                      {new Date(alert.createdAt).toLocaleString("vi-VN")}
+                      {new Date(alert.createdAt).toLocaleString("en-US")}
                     </span>
                   </div>
                 </div>
@@ -96,7 +97,7 @@ export default function AdminAlertsPage() {
                     size="sm"
                     onClick={() => markRead(alert.id)}
                   >
-                    Đã đọc
+                    {L.adminAlertsRead}
                   </Button>
                 )}
               </div>
@@ -106,7 +107,7 @@ export default function AdminAlertsPage() {
         {alerts.length === 0 && (
           <Card>
             <CardContent className="p-8 text-center text-gray-500">
-              Chưa có cảnh báo nào
+              {L.adminAlertsNone}
             </CardContent>
           </Card>
         )}

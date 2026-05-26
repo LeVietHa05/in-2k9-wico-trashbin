@@ -3,6 +3,7 @@
 import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { L } from "@/lib/lang"
 
 export function ImageUploader({
   onScan,
@@ -63,10 +64,10 @@ export function ImageUploader({
             <div className="text-gray-500">
               <div className="text-4xl mb-2">📸</div>
               <p className="font-medium">
-                Kéo thả ảnh vào đây hoặc click để chọn
+                {L.imgUploaderDrop}
               </p>
               <p className="text-sm mt-1">
-                Hỗ trợ JPG, PNG, WEBP
+                {L.imgUploaderSupports}
               </p>
             </div>
           )}
@@ -89,10 +90,10 @@ export function ImageUploader({
               variant="secondary"
               disabled={loading}
             >
-              Chọn lại
+              {L.imgUploaderReselect}
             </Button>
             <Button onClick={handleScan} disabled={loading}>
-              {loading ? "Đang phân tích..." : "Phân loại rác"}
+              {loading ? L.imgUploaderClassifying : L.imgUploaderClassifyBtn}
             </Button>
           </div>
         )}

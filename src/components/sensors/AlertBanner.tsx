@@ -3,6 +3,7 @@
 import { AlertData } from "@/types"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { L } from "@/lib/lang"
 
 export function AlertBanner({
   alerts,
@@ -22,7 +23,7 @@ export function AlertBanner({
       {onMarkAllRead && unread.length > 1 && (
         <div className="flex justify-end">
           <Button variant="ghost" size="sm" onClick={onMarkAllRead}>
-            Đánh dấu tất cả đã đọc
+            {L.alertBannerMarkAllRead}
           </Button>
         </div>
       )}
@@ -41,7 +42,7 @@ export function AlertBanner({
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-gray-900">{alert.message}</p>
             <p className="text-xs text-gray-500 mt-0.5">
-              {new Date(alert.createdAt).toLocaleString("vi-VN")}
+              {new Date(alert.createdAt).toLocaleString("en-US")}
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -64,7 +65,7 @@ export function AlertBanner({
               <button
                 onClick={() => onMarkRead(alert.id)}
                 className="text-xs text-gray-400 hover:text-emerald-600 transition-colors"
-                title="Đánh dấu đã đọc"
+                title={L.alertBannerMarkReadTitle}
               >
                 ✕
               </button>
@@ -74,7 +75,7 @@ export function AlertBanner({
       ))}
       {unread.length > 5 && (
         <p className="text-xs text-gray-500 text-center">
-          + {unread.length - 5} cảnh báo khác
+          {L.alertBannerMore(unread.length - 5)}
         </p>
       )}
     </div>

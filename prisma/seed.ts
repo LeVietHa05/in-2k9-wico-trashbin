@@ -23,7 +23,7 @@ async function main() {
     update: {},
     create: {
       email: "user@ecobin.com",
-      name: "Nguyễn Văn A",
+      name: "User",
       password: userPassword,
       role: "USER",
     },
@@ -34,10 +34,10 @@ async function main() {
     update: {},
     create: {
       id: "bin-1",
-      name: "Thùng rác Công viên Lê Văn Tám",
+      name: "Le Van Tam Park Bin",
       lat: 10.7769,
       lng: 106.6953,
-      address: "Công viên Lê Văn Tám, Quận 1, TP.HCM",
+      address: "Le Van Tam Park, District 1, HCMC",
       userId: admin.id,
     },
   })
@@ -47,10 +47,10 @@ async function main() {
     update: {},
     create: {
       id: "bin-2",
-      name: "Thùng rác Chợ Bến Thành",
+      name: "Ben Thanh Market Bin",
       lat: 10.7726,
       lng: 106.6984,
-      address: "Chợ Bến Thành, Quận 1, TP.HCM",
+      address: "Ben Thanh Market, District 1, HCMC",
       userId: admin.id,
     },
   })
@@ -60,10 +60,10 @@ async function main() {
     update: {},
     create: {
       id: "bin-3",
-      name: "Thùng rác Nhà thờ Đức Bà",
+      name: "Notre-Dame Cathedral Bin",
       lat: 10.7797,
       lng: 106.6991,
-      address: "Nhà thờ Đức Bà, Quận 1, TP.HCM",
+      address: "Notre-Dame Cathedral, District 1, HCMC",
       userId: admin.id,
     },
   })
@@ -81,7 +81,7 @@ async function main() {
       binId: bin2.id,
       userId: admin.id,
       type: "BOTH",
-      message: "Cảnh báo! Thùng rác Chợ Bến Thành: CO₂ (1200ppm) và Metan (600ppm) vượt ngưỡng!",
+      message: "Alert! Ben Thanh Market Bin: CO₂ (1200ppm) and Methane (600ppm) exceeded thresholds!",
     },
   })
 
@@ -90,7 +90,7 @@ async function main() {
       binId: bin3.id,
       userId: admin.id,
       type: "HIGH_CO2",
-      message: "Cảnh báo! Thùng rác Nhà thờ Đức Bà: CO₂ (450ppm) đang tăng cao!",
+      message: "Alert! Notre-Dame Cathedral Bin: CO₂ (450ppm) is rising!",
     },
   })
 

@@ -22,7 +22,7 @@ export interface ScanResult {
   binId?: string
   userId: string
   imageUrl: string
-  result: "Hữu cơ" | "Vô cơ"
+  result: "Organic" | "Inorganic"
   confidence: number
   createdAt: string
 }

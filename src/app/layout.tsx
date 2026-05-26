@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "EcoBin Monitor - Hệ thống quản lý thùng rác thông minh",
+  title: "EcoBin Monitor - Smart Bin Management System",
   description:
-    "Phân loại rác bằng AI, giám sát khí thải CO₂ và Metan, cảnh báo môi trường",
+    "AI waste classification, real-time CO₂ and Methane monitoring, environmental alerts",
 }
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="vi" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased">{children}</body>
     </html>
   )

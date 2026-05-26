@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
     if (existing) {
       return NextResponse.json(
-        { error: "Email đã được sử dụng" },
+        { error: "Email already in use" },
         { status: 400 }
       )
     }

@@ -5,6 +5,7 @@ import { UserData } from "@/types"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { L } from "@/lib/lang"
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<UserData[]>([])
@@ -35,10 +36,10 @@ export default function AdminUsersPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">
-          Quản lý người dùng
+          {L.adminUsersTitle}
         </h1>
         <p className="text-sm text-gray-500">
-          {users.length} người dùng
+          {L.adminUsersCount(users.length)}
         </p>
       </div>
 
@@ -48,19 +49,19 @@ export default function AdminUsersPage() {
             <thead>
               <tr className="border-b border-gray-100">
                 <th className="text-left p-4 text-sm font-medium text-gray-500">
-                  Tên
+                  {L.adminUsersName}
                 </th>
                 <th className="text-left p-4 text-sm font-medium text-gray-500">
                   Email
                 </th>
                 <th className="text-left p-4 text-sm font-medium text-gray-500">
-                  Vai trò
+                  {L.adminUsersRole}
                 </th>
                 <th className="text-left p-4 text-sm font-medium text-gray-500">
-                  Ngày tạo
+                  {L.adminUsersCreated}
                 </th>
                 <th className="text-right p-4 text-sm font-medium text-gray-500">
-                  Hành động
+                  {L.adminUsersActions}
                 </th>
               </tr>
             </thead>
@@ -75,11 +76,11 @@ export default function AdminUsersPage() {
                     <Badge
                       variant={user.role === "ADMIN" ? "danger" : "default"}
                     >
-                      {user.role === "ADMIN" ? "Admin" : "User"}
+                      {user.role === "ADMIN" ? L.adminUsersBadgeAdmin : L.adminUsersBadgeUser}
                     </Badge>
                   </td>
                   <td className="p-4 text-sm text-gray-500">
-                    {new Date(user.createdAt).toLocaleDateString("vi-VN")}
+                    {new Date(user.createdAt).toLocaleDateString("en-US")}
                   </td>
                   <td className="p-4 text-right">
                     <Button
@@ -87,7 +88,7 @@ export default function AdminUsersPage() {
                       size="sm"
                       onClick={() => toggleRole(user.id, user.role)}
                     >
-                      {user.role === "ADMIN" ? "Hạ user" : "Lên admin"}
+                      {user.role === "ADMIN" ? L.adminUsersDemote : L.adminUsersPromote}
                     </Button>
                   </td>
                 </tr>

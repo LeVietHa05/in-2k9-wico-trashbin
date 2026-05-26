@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
+import { L } from "@/lib/lang"
 
 const LocationPicker = dynamic(
   () =>
@@ -89,7 +90,7 @@ export default function AdminBinsPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Xoá thùng rác này?")) return
+    if (!confirm(L.adminBinsConfirmDelete)) return
     const res = await fetch(`/api/bins/${id}`, { method: "DELETE" })
     if (res.ok) {
       setBins((prev) => prev.filter((b) => b.id !== id))
@@ -101,12 +102,12 @@ export default function AdminBinsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            Quản lý thùng rác
+            {L.adminBinsTitle}
           </h1>
-          <p className="text-sm text-gray-500">{bins.length} thùng rác</p>
+          <p className="text-sm text-gray-500">{L.adminBinsCount(bins.length)}</p>
         </div>
         <Button onClick={() => { resetForm(); setShowForm(!showForm) }}>
-          {showForm ? "Hủy" : "+ Thêm thùng rác"}
+          {L.adminBinsAddBtn(showForm)}
         </Button>
       </div>
 
@@ -114,18 +115,18 @@ export default function AdminBinsPage() {
         <Card>
           <CardContent className="p-6">
             <h3 className="font-semibold text-gray-900 mb-4">
-              {editingId ? "Chỉnh sửa thùng rác" : "Thêm thùng rác mới"}
+              {L.adminBinsFormTitle(!!editingId)}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <Input
-                  label="Tên thùng rác"
+                  label={L.adminBinsName}
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   required
                 />
                 <Input
-                  label="Địa chỉ"
+                  label={L.adminBinsAddress}
                   value={form.address}
                   onChange={(e) => setForm({ ...form, address: e.target.value })}
                   required
@@ -142,9 +143,9 @@ export default function AdminBinsPage() {
                 <span>📍 {form.lat || "---"}, {form.lng || "---"}</span>
               </div>
               <div className="flex gap-3">
-                <Button type="submit">{editingId ? "Cập nhật" : "Lưu"}</Button>
+                <Button type="submit">{editingId ? L.adminBinsUpdate : L.adminBinsSave}</Button>
                 <Button type="button" variant="secondary" onClick={resetForm}>
-                  Hủy
+                  {L.adminBinsCancel}
                 </Button>
               </div>
             </form>
@@ -165,7 +166,7 @@ export default function AdminBinsPage() {
                     {bin.latestSensor &&
                       (bin.latestSensor.co2 > 1000 ||
                         bin.latestSensor.methane > 500) && (
-                        <Badge variant="danger">Cảnh báo</Badge>
+                        <Badge variant="danger">{L.adminBinsAlertBadge}</Badge>
                       )}
                   </div>
                   <p className="text-sm text-gray-500">{bin.address}</p>
@@ -191,14 +192,14 @@ export default function AdminBinsPage() {
                     size="sm"
                     onClick={() => startEdit(bin)}
                   >
-                    Sửa
+                    {L.adminBinsEdit}
                   </Button>
                   <Button
                     variant="danger"
                     size="sm"
                     onClick={() => handleDelete(bin.id)}
                   >
-                    Xóa
+                    {L.adminBinsDelete}
                   </Button>
                 </div>
               </div>

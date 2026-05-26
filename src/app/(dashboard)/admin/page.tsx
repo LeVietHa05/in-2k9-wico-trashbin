@@ -5,6 +5,7 @@ import dynamic from "next/dynamic"
 import { BinData, AlertData } from "@/types"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { AlertBanner } from "@/components/sensors/AlertBanner"
+import { L } from "@/lib/lang"
 
 const BinMap = dynamic(
   () => import("@/components/map/BinMap").then((m) => ({ default: m.BinMap })),
@@ -62,20 +63,20 @@ export default function AdminDashboard() {
           Admin Dashboard
         </h1>
         <p className="text-sm text-gray-500">
-          Tổng quan hệ thống thùng rác thông minh
+          {L.adminDashboardSubtitle}
         </p>
       </div>
 
       <div className="grid grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Tổng thùng rác</p>
+            <p className="text-sm text-gray-500">{L.adminDashboardTotalBins}</p>
             <p className="text-2xl font-bold">{bins.length}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Cảnh báo chưa đọc</p>
+            <p className="text-sm text-gray-500">{L.adminDashboardUnreadAlerts}</p>
             <p className="text-2xl font-bold text-red-600">
               {alerts.filter((a) => !a.isRead).length}
             </p>
@@ -83,7 +84,7 @@ export default function AdminDashboard() {
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">CO₂ trung bình</p>
+            <p className="text-sm text-gray-500">{L.adminDashboardAvgCo2}</p>
             <p className="text-2xl font-bold">
               {bins.length > 0 ? (totalCo2 / bins.length).toFixed(0) : 0} ppm
             </p>
@@ -91,7 +92,7 @@ export default function AdminDashboard() {
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Metan trung bình</p>
+            <p className="text-sm text-gray-500">{L.adminDashboardAvgMethane}</p>
             <p className="text-2xl font-bold">
               {bins.length > 0 ? (totalMethane / bins.length).toFixed(0) : 0} ppm
             </p>
@@ -103,7 +104,7 @@ export default function AdminDashboard() {
         <Card>
           <CardHeader>
             <h2 className="font-semibold text-gray-900">
-              Cảnh báo gần đây
+              {L.adminDashboardRecentAlerts}
             </h2>
           </CardHeader>
           <CardContent>
@@ -116,14 +117,14 @@ export default function AdminDashboard() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">
-              Bản đồ các thùng rác
+              {L.adminDashboardBinMap}
             </h2>
             {selectedBinId && (
               <button
                 onClick={() => setSelectedBinId(null)}
                 className="text-xs text-gray-400 hover:text-gray-600"
               >
-                Bỏ chọn
+                {L.adminDashboardDeselect}
               </button>
             )}
           </div>

@@ -21,7 +21,7 @@ export async function GET() {
     binId: s.binId,
     userId: s.userId,
     imageUrl: s.imageUrl,
-    result: s.result as "Hữu cơ" | "Vô cơ",
+    result: s.result as "Organic" | "Inorganic",
     confidence: s.confidence,
     createdAt: s.createdAt.toISOString(),
   }))

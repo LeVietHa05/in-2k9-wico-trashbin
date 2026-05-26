@@ -2,6 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { L } from "@/lib/lang"
 
 export function ResultCard({
   result,
@@ -12,7 +13,7 @@ export function ResultCard({
 }) {
   if (!result) return null
 
-  const isOrganic = result === "Hữu cơ"
+  const isOrganic = result === "Organic"
   const confidencePercent = ((confidence ?? 0) * 100).toFixed(1)
 
   return (
@@ -22,14 +23,14 @@ export function ResultCard({
           <span className="text-5xl">{isOrganic ? "🌿" : "♻️"}</span>
           <div>
             <h3 className="text-lg font-semibold text-gray-900">
-              Kết quả: {result}
+              {L.resultCardResult}: {result}
             </h3>
             <div className="flex items-center gap-2 mt-1">
               <Badge variant={isOrganic ? "success" : "warning"}>
-                {isOrganic ? "Rác hữu cơ" : "Rác vô cơ"}
+                {isOrganic ? L.resultCardOrganic : L.resultCardInorganic}
               </Badge>
               <span className="text-sm text-gray-500">
-                Độ tin cậy: {confidencePercent}%
+                {L.resultCardConfidence}: {confidencePercent}%
               </span>
             </div>
           </div>

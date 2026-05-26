@@ -3,6 +3,7 @@
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
+import { L as Lang } from "@/lib/lang"
 
 const markerIcon = new L.DivIcon({
   className: "bg-transparent",
@@ -56,7 +57,7 @@ export function LocationPicker({
         </MapContainer>
       </div>
       <p className="text-xs text-gray-500 text-center">
-        Click vào bản đồ để chọn vị trí thùng rác
+        {Lang.locationPickerHint}
       </p>
     </div>
   )

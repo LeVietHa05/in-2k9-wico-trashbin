@@ -27,14 +27,14 @@ export async function POST(request: Request) {
       })
 
       let type = "HIGH_CO2"
-      let message = `Cảnh báo! Thùng ${bin?.name}: CO2 (${co2}ppm) vượt ngưỡng!`
+      let message = `Alert! Bin ${bin?.name}: CO2 (${co2}ppm) exceeded threshold!`
 
       if (co2Alert && methaneAlert) {
         type = "BOTH"
-        message = `Cảnh báo! Thùng ${bin?.name}: CO2 (${co2}ppm) và Metan (${methane}ppm) vượt ngưỡng!`
+        message = `Alert! Bin ${bin?.name}: CO2 (${co2}ppm) and Methane (${methane}ppm) exceeded thresholds!`
       } else if (methaneAlert) {
         type = "HIGH_METHANE"
-        message = `Cảnh báo! Thùng ${bin?.name}: Metan (${methane}ppm) vượt ngưỡng!`
+        message = `Alert! Bin ${bin?.name}: Methane (${methane}ppm) exceeded threshold!`
       }
 
       await prisma.alert.create({

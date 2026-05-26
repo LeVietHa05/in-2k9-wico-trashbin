@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { GasGauge } from "./GasGauge"
 import { getAlertLevel } from "@/lib/utils"
+import { L } from "@/lib/lang"
 
 interface SensorPoint {
   id: string
@@ -34,7 +35,7 @@ interface BinDetailData {
 
 function formatTime(iso: string) {
   const d = new Date(iso)
-  return d.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })
+  return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })
 }
 
 export function BinDetail({ binId, onClose }: { binId: string; onClose: () => void }) {
@@ -60,7 +61,7 @@ export function BinDetail({ binId, onClose }: { binId: string; onClose: () => vo
     return (
       <Card>
         <CardContent className="p-6 text-center text-gray-500">
-          Đang tải dữ liệu...
+          {L.binDetailLoading}
         </CardContent>
       </Card>
     )
@@ -70,7 +71,7 @@ export function BinDetail({ binId, onClose }: { binId: string; onClose: () => vo
     return (
       <Card>
         <CardContent className="p-6 text-center text-gray-500">
-          Không tìm thấy dữ liệu
+          {L.binDetailNoData}
         </CardContent>
       </Card>
     )
@@ -85,7 +86,7 @@ export function BinDetail({ binId, onClose }: { binId: string; onClose: () => vo
   const chartData = data.sensors.map((s) => ({
     time: formatTime(s.timestamp),
     CO2: s.co2,
-    Metan: s.methane,
+    Methane: s.methane,
   }))
 
   return (
@@ -99,7 +100,7 @@ export function BinDetail({ binId, onClose }: { binId: string; onClose: () => vo
               </h3>
               {level !== "safe" && (
                 <Badge variant={level === "danger" ? "danger" : "warning"}>
-                  {level === "danger" ? "Nguy hiểm" : "Cảnh báo"}
+                  {level === "danger" ? L.binDetailDanger : L.binDetailWarning}
                 </Badge>
               )}
             </div>
@@ -121,7 +122,7 @@ export function BinDetail({ binId, onClose }: { binId: string; onClose: () => vo
         {chartData.length > 0 && (
           <div>
             <h4 className="text-sm font-medium text-gray-700 mb-3">
-              Biểu đồ lịch sử
+              {L.binDetailChartTitle}
             </h4>
             <div className="h-[250px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -145,8 +146,8 @@ export function BinDetail({ binId, onClose }: { binId: string; onClose: () => vo
                   />
                   <Line
                     type="monotone"
-                    dataKey="Metan"
-                    name="Metan"
+                    dataKey="Methane"
+                    name="Methane"
                     stroke="#f59e0b"
                     strokeWidth={2}
                     dot={false}
@@ -159,15 +160,15 @@ export function BinDetail({ binId, onClose }: { binId: string; onClose: () => vo
 
         <div className="grid grid-cols-3 gap-3 text-sm">
           <div className="p-3 bg-gray-50 rounded-lg text-center">
-            <p className="text-gray-500">Vĩ độ</p>
+            <p className="text-gray-500">{L.binDetailLatitude}</p>
             <p className="font-medium">{data.lat.toFixed(4)}</p>
           </div>
           <div className="p-3 bg-gray-50 rounded-lg text-center">
-            <p className="text-gray-500">Kinh độ</p>
+            <p className="text-gray-500">{L.binDetailLongitude}</p>
             <p className="font-medium">{data.lng.toFixed(4)}</p>
           </div>
           <div className="p-3 bg-gray-50 rounded-lg text-center">
-            <p className="text-gray-500">Số lần đo</p>
+            <p className="text-gray-500">{L.binDetailReadings}</p>
             <p className="font-medium">{data.sensors.length}</p>
           </div>
         </div>

@@ -1,6 +1,7 @@
 "use client"
 
 import { getAlertLevel } from "@/lib/utils"
+import { L } from "@/lib/lang"
 
 export function GasGauge({
   co2,
@@ -27,7 +28,7 @@ export function GasGauge({
       <div className="space-y-4">
         <div>
           <div className="flex justify-between items-center mb-1">
-            <span className="text-sm font-medium text-gray-700">CO₂</span>
+            <span className="text-sm font-medium text-gray-700">{L.gasGaugeCo2}</span>
             <span className={`text-sm font-bold ${colors.text}`}>
               {co2} ppm
             </span>
@@ -39,13 +40,13 @@ export function GasGauge({
             />
           </div>
           <p className="text-xs text-gray-500 mt-0.5">
-            Ngưỡng an toàn: &lt; 1000 ppm
+            {L.gasGaugeCo2Threshold}
           </p>
         </div>
 
         <div>
           <div className="flex justify-between items-center mb-1">
-            <span className="text-sm font-medium text-gray-700">Metan (CH₄)</span>
+            <span className="text-sm font-medium text-gray-700">{L.gasGaugeMethane}</span>
             <span className={`text-sm font-bold ${colors.text}`}>
               {methane} ppm
             </span>
@@ -57,7 +58,7 @@ export function GasGauge({
             />
           </div>
           <p className="text-xs text-gray-500 mt-0.5">
-            Ngưỡng an toàn: &lt; 500 ppm
+            {L.gasGaugeMethaneThreshold}
           </p>
         </div>
       </div>

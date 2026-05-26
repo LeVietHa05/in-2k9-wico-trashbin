@@ -7,6 +7,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { L } from "@/lib/lang"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -29,7 +30,7 @@ export default function LoginPage() {
     })
 
     if (result?.error) {
-      setError("Email hoặc mật khẩu không đúng")
+      setError(L.loginError)
       setLoading(false)
       return
     }
@@ -44,9 +45,9 @@ export default function LoginPage() {
         <CardHeader>
           <div className="text-center">
             <div className="text-4xl mb-2">🌱</div>
-            <h1 className="text-xl font-bold text-gray-900">Đăng nhập</h1>
+            <h1 className="text-xl font-bold text-gray-900">{L.loginTitle}</h1>
             <p className="text-sm text-gray-500 mt-1">
-              Hệ thống quản lý thùng rác thông minh
+              {L.loginSubtitle}
             </p>
           </div>
         </CardHeader>
@@ -60,7 +61,7 @@ export default function LoginPage() {
               required
             />
             <Input
-              label="Mật khẩu"
+              label={L.loginPassword}
               name="password"
               type="password"
               placeholder="••••••••"
@@ -72,13 +73,13 @@ export default function LoginPage() {
               </p>
             )}
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+              {loading ? L.loginLoggingIn : L.loginButton}
             </Button>
           </form>
           <p className="text-sm text-gray-500 text-center mt-4">
-            Chưa có tài khoản?{" "}
+            {L.loginNoAccount}{" "}
             <Link href="/register" className="text-emerald-600 hover:underline">
-              Đăng ký
+              {L.loginSignUp}
             </Link>
           </p>
         </CardContent>

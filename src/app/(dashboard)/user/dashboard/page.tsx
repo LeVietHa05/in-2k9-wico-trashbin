@@ -9,6 +9,7 @@ import { GasGauge } from "@/components/sensors/GasGauge"
 import { AlertBanner } from "@/components/sensors/AlertBanner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { L } from "@/lib/lang"
 
 const BinMap = dynamic(
   () => import("@/components/map/BinMap").then((m) => ({ default: m.BinMap })),
@@ -101,13 +102,13 @@ export default function UserDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Tổng quan</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{L.userDashboardTitle}</h1>
           <p className="text-sm text-gray-500">
-            Chào mừng, {session?.user?.name}
+            {L.userDashboardWelcome(session?.user?.name || "")}
           </p>
         </div>
         <Button onClick={() => setShowForm(!showForm)} variant="secondary">
-          {showForm ? "Hủy" : "+ Thêm thùng rác"}
+          {L.userDashboardAddBtn(showForm)}
         </Button>
       </div>
 
@@ -116,8 +117,8 @@ export default function UserDashboard() {
           <CardContent className="p-6">
             <form onSubmit={handleCreate} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <Input label="Tên thùng rác" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
-                <Input label="Địa chỉ" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} required />
+                <Input label={L.userDashboardBinName} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+                <Input label={L.userDashboardAddress} value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} required />
               </div>
               <LocationPicker
                 lat={form.lat ? parseFloat(form.lat) : null}
@@ -127,7 +128,7 @@ export default function UserDashboard() {
               <div className="flex gap-2 text-sm text-gray-500">
                 <span>📍 {form.lat || "---"}, {form.lng || "---"}</span>
               </div>
-              <Button type="submit">Lưu</Button>
+              <Button type="submit">{L.userDashboardSave}</Button>
             </form>
           </CardContent>
         </Card>
@@ -137,7 +138,7 @@ export default function UserDashboard() {
         <Card>
           <CardHeader>
             <h2 className="font-semibold text-gray-900">
-              Cảnh báo mới
+              {L.userDashboardNewAlerts}
             </h2>
           </CardHeader>
           <CardContent>
@@ -152,14 +153,14 @@ export default function UserDashboard() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <h2 className="font-semibold text-gray-900">
-                  Bản đồ thùng rác
+                  {L.userDashboardBinMap}
                 </h2>
                 {selectedBinId && (
                   <button
                     onClick={() => setSelectedBinId(null)}
                     className="text-xs text-gray-400 hover:text-gray-600"
                   >
-                    Bỏ chọn
+                    {L.userDashboardDeselect}
                   </button>
                 )}
               </div>
@@ -189,7 +190,7 @@ export default function UserDashboard() {
           <Card>
             <CardHeader>
               <h2 className="font-semibold text-gray-900">
-                Chỉ số khí tổng hợp
+                {L.userDashboardCombinedGas}
               </h2>
             </CardHeader>
             <CardContent>
@@ -200,23 +201,23 @@ export default function UserDashboard() {
           <Card>
             <CardHeader>
               <h2 className="font-semibold text-gray-900">
-                Thống kê
+                {L.userDashboardStats}
               </h2>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Tổng thùng rác</span>
+                  <span className="text-sm text-gray-600">{L.userDashboardTotalBins}</span>
                   <span className="font-bold text-lg">{bins.length}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Cảnh báo chưa đọc</span>
+                  <span className="text-sm text-gray-600">{L.userDashboardUnreadAlerts}</span>
                   <span className="font-bold text-lg text-red-600">
                     {alerts.filter((a) => !a.isRead).length}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">CO₂ trung bình</span>
+                  <span className="text-sm text-gray-600">{L.userDashboardAvgCo2}</span>
                   <span className="font-bold text-lg">
                     {bins.length > 0
                       ? (allCo2 / bins.length).toFixed(0)

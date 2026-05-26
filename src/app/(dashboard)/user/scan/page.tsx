@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { ImageUploader } from "@/components/scan/ImageUploader"
 import { ResultCard } from "@/components/scan/ResultCard"
+import { L } from "@/lib/lang"
 
 export default function ScanPage() {
   const [result, setResult] = useState<{
@@ -25,7 +26,7 @@ export default function ScanPage() {
 
     if (!res.ok) {
       const data = await res.json()
-      setError(data.error || "Phân tích thất bại")
+      setError(data.error || L.scanError)
       return
     }
 
@@ -36,9 +37,9 @@ export default function ScanPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Phân loại rác</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{L.scanTitle}</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Chụp hoặc tải lên hình ảnh rác để phân loại hữu cơ / vô cơ bằng AI
+          {L.scanSubtitle}
         </p>
       </div>
 

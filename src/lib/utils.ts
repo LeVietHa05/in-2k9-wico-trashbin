@@ -9,7 +9,7 @@ export function getAlertLevel(co2: number, methane: number): {
   if (co2Alert && methaneAlert) {
     return {
       level: "danger",
-      message: `Cảnh báo! CO2 (${co2}ppm) và Metan (${methane}ppm) vượt ngưỡng an toàn!`,
+      message: `Alert! CO2 (${co2}ppm) and Methane (${methane}ppm) exceeded safe thresholds!`,
       type: "BOTH",
     }
   }
@@ -17,7 +17,7 @@ export function getAlertLevel(co2: number, methane: number): {
   if (co2Alert) {
     return {
       level: "warning",
-      message: `Cảnh báo! CO2 (${co2}ppm) vượt ngưỡng an toàn (>1000ppm)!`,
+      message: `Alert! CO2 (${co2}ppm) exceeded safe threshold (>1000ppm)!`,
       type: "HIGH_CO2",
     }
   }
@@ -25,14 +25,14 @@ export function getAlertLevel(co2: number, methane: number): {
   if (methaneAlert) {
     return {
       level: "warning",
-      message: `Cảnh báo! Metan (${methane}ppm) vượt ngưỡng an toàn (>500ppm)!`,
+      message: `Alert! Methane (${methane}ppm) exceeded safe threshold (>500ppm)!`,
       type: "HIGH_METHANE",
     }
   }
 
   return {
     level: "safe",
-    message: "Các chỉ số trong ngưỡng an toàn",
+    message: "All readings are within safe range",
     type: null,
   }
 }

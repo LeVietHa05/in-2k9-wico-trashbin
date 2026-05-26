@@ -3,18 +3,19 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut, useSession } from "next-auth/react"
+import { L } from "@/lib/lang"
 
 const userLinks = [
-  { href: "/user/dashboard", label: "Tổng quan", icon: "📊" },
-  { href: "/user/scan", label: "Phân loại rác", icon: "📷" },
-  { href: "/user/history", label: "Lịch sử", icon: "📋" },
+  { href: "/user/dashboard", label: L.navDashboard, icon: "📊" },
+  { href: "/user/scan", label: L.navClassifyWaste, icon: "📷" },
+  { href: "/user/history", label: L.navHistory, icon: "📋" },
 ]
 
 const adminLinks = [
-  { href: "/admin", label: "Dashboard", icon: "📊" },
-  { href: "/admin/bins", label: "Quản lý thùng rác", icon: "🗑️" },
-  { href: "/admin/users", label: "Người dùng", icon: "👥" },
-  { href: "/admin/alerts", label: "Cảnh báo", icon: "🔔" },
+  { href: "/admin", label: L.navDashboard, icon: "📊" },
+  { href: "/admin/bins", label: L.navBinManagement, icon: "🗑️" },
+  { href: "/admin/users", label: L.navUsers, icon: "👥" },
+  { href: "/admin/alerts", label: L.navAlerts, icon: "🔔" },
 ]
 
 export function Sidebar() {
@@ -31,7 +32,7 @@ export function Sidebar() {
           🌱 EcoBin Monitor
         </h1>
         <p className="text-xs text-gray-500 mt-0.5">
-          Hệ thống quản lý thùng rác thông minh
+          {L.navSubtitle}
         </p>
       </div>
 
@@ -64,7 +65,7 @@ export function Sidebar() {
               {session?.user?.name}
             </p>
             <p className="text-xs text-gray-500 truncate">
-              {isAdmin ? "Quản trị viên" : "Người dùng"}
+              {isAdmin ? L.navRoleAdmin : L.navRoleUser}
             </p>
           </div>
         </div>
@@ -72,7 +73,7 @@ export function Sidebar() {
           onClick={() => signOut({ callbackUrl: "/" })}
           className="w-full mt-1 px-3 py-2 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left"
         >
-          Đăng xuất
+          {L.navSignOut}
         </button>
       </div>
     </aside>

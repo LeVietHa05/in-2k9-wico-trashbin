@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { L } from "@/lib/lang"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -24,7 +25,7 @@ export default function RegisterPage() {
     const confirm = form.get("confirmPassword") as string
 
     if (password !== confirm) {
-      setError("Mật khẩu xác nhận không khớp")
+      setError(L.registerErrorMismatch)
       setLoading(false)
       return
     }
@@ -37,7 +38,7 @@ export default function RegisterPage() {
 
     if (!res.ok) {
       const data = await res.json()
-      setError(data.error || "Đăng ký thất bại")
+      setError(data.error || L.registerErrorFailed)
       setLoading(false)
       return
     }
@@ -51,15 +52,15 @@ export default function RegisterPage() {
         <CardHeader>
           <div className="text-center">
             <div className="text-4xl mb-2">🌱</div>
-            <h1 className="text-xl font-bold text-gray-900">Đăng ký</h1>
+            <h1 className="text-xl font-bold text-gray-900">{L.registerTitle}</h1>
             <p className="text-sm text-gray-500 mt-1">
-              Tạo tài khoản mới
+              {L.registerSubtitle}
             </p>
           </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <Input label="Họ tên" name="name" placeholder="Nguyễn Văn A" required />
+            <Input label={L.registerFullName} name="name" placeholder="John Doe" required />
             <Input
               label="Email"
               name="email"
@@ -68,7 +69,7 @@ export default function RegisterPage() {
               required
             />
             <Input
-              label="Mật khẩu"
+              label={L.registerPassword}
               name="password"
               type="password"
               placeholder="••••••••"
@@ -76,7 +77,7 @@ export default function RegisterPage() {
               minLength={6}
             />
             <Input
-              label="Xác nhận mật khẩu"
+              label={L.registerConfirmPassword}
               name="confirmPassword"
               type="password"
               placeholder="••••••••"
@@ -88,13 +89,13 @@ export default function RegisterPage() {
               </p>
             )}
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Đang đăng ký..." : "Đăng ký"}
+              {loading ? L.registerSigningUp : L.registerButton}
             </Button>
           </form>
           <p className="text-sm text-gray-500 text-center mt-4">
-            Đã có tài khoản?{" "}
+            {L.registerHasAccount}{" "}
             <Link href="/login" className="text-emerald-600 hover:underline">
-              Đăng nhập
+              {L.registerLogin}
             </Link>
           </p>
         </CardContent>
