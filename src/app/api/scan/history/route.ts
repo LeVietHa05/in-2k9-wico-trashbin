@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { auth } from "@/lib/auth"
+import { requireAuth } from "@/lib/auth"
 
 export async function GET() {
-  const session = await auth()
-  if (!session?.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
+  const a = await requireAuth()
+  if ("error" in a) return a.error
 
-  const userId = (session.user).id
+  const userId = a.user.id
 
   const scans = await prisma.scan.findMany({
     where: { userId },

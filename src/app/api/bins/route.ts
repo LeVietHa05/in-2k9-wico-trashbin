@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { auth } from "@/lib/auth"
+import { requireAuth } from "@/lib/auth"
 
 export async function GET() {
-  const session = await auth()
-  if (!session?.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
+  const a = await requireAuth()
+  if ("error" in a) return a.error
 
   const bins = await prisma.bin.findMany({
     include: {
@@ -44,10 +42,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const session = await auth()
-  if (!session?.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
+  const auth = await requireAuth()
+  if ("error" in auth) return auth.error
 
   const body = await request.json()
   const { name, lat, lng, address } = body
@@ -65,7 +61,7 @@ export async function POST(request: Request) {
       lat,
       lng,
       address,
-      userId: (session.user).id,
+      userId: auth.user.id,
     },
   })
 

@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
+import { NextResponse } from "next/server"
 import { prisma } from "./prisma"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -59,3 +60,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt",
   },
 })
+
+export async function requireAuth(opts?: { admin?: boolean }) {
+  const session = await auth()
+  if (!session?.user) {
+    return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) }
+  }
+  const userId = (session.user).id
+  const dbUser = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, role: true },
+  })
+  if (!dbUser) {
+    return { error: NextResponse.json({ error: "Session expired - please logout and login again" }, { status: 401 }) }
+  }
+  if (opts?.admin && dbUser.role !== "ADMIN") {
+    return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }) }
+  }
+  return { user: dbUser }
+}

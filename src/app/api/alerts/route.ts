@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { auth } from "@/lib/auth"
+import { requireAuth } from "@/lib/auth"
 
 export async function GET() {
-  const session = await auth()
-  if (!session?.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
+  const a = await requireAuth()
+  if ("error" in a) return a.error
 
   const alerts = await prisma.alert.findMany({
     include: {
@@ -33,10 +31,8 @@ export async function GET() {
 }
 
 export async function PATCH(request: Request) {
-  const session = await auth()
-  if (!session?.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
+  const a = await requireAuth()
+  if ("error" in a) return a.error
 
   const body = await request.json()
   const { alertId } = body

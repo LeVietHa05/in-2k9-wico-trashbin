@@ -1,19 +1,11 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { auth } from "@/lib/auth"
+import { requireAuth } from "@/lib/auth"
 import { classifyWaste } from "@/lib/gemini"
 
 export async function POST(request: Request) {
-  const session = await auth()
-  const userId = (session?.user as { id?: string } | undefined)?.id
-  if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
-
-  const user = await prisma.user.findUnique({ where: { id: userId }, select: { id: true } })
-  if (!user) {
-    return NextResponse.json({ error: "User not found - please logout and login again" }, { status: 401 })
-  }
+  const a = await requireAuth()
+  if ("error" in a) return a.error
 
   try {
     const formData = await request.formData()
@@ -31,7 +23,7 @@ export async function POST(request: Request) {
 
     const scan = await prisma.scan.create({
       data: {
-        userId: user.id,
+        userId: a.user.id,
         imageUrl: `data:${file.type};base64,${base64}`,
         result: result.type,
         confidence: result.confidence,
