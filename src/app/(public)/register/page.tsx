@@ -21,19 +21,11 @@ export default function RegisterPage() {
     const form = new FormData(e.currentTarget)
     const name = form.get("name") as string
     const email = form.get("email") as string
-    const password = form.get("password") as string
-    const confirm = form.get("confirmPassword") as string
 
-    if (password !== confirm) {
-      setError(L.registerErrorMismatch)
-      setLoading(false)
-      return
-    }
-
-    const res = await fetch("/api/auth/register", {
+    const res = await fetch("/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, email }),
     })
 
     if (!res.ok) {
@@ -43,7 +35,7 @@ export default function RegisterPage() {
       return
     }
 
-    router.push("/login?registered=true")
+    router.push("/user/dashboard")
   }
 
   return (
@@ -68,21 +60,7 @@ export default function RegisterPage() {
               placeholder="your@email.com"
               required
             />
-            <Input
-              label={L.registerPassword}
-              name="password"
-              type="password"
-              placeholder="••••••••"
-              required
-              minLength={6}
-            />
-            <Input
-              label={L.registerConfirmPassword}
-              name="confirmPassword"
-              type="password"
-              placeholder="••••••••"
-              required
-            />
+
             {error && (
               <p className="text-sm text-red-600 bg-red-50 p-2 rounded">
                 {error}
@@ -93,8 +71,7 @@ export default function RegisterPage() {
             </Button>
           </form>
           <p className="text-sm text-gray-500 text-center mt-4">
-            {L.registerHasAccount}{" "}
-            <Link href="/login" className="text-emerald-600 hover:underline">
+            <Link href="/user/dashboard" className="text-emerald-600 hover:underline">
               {L.registerLogin}
             </Link>
           </p>

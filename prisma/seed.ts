@@ -1,11 +1,10 @@
 import { PrismaClient } from "@prisma/client"
-import bcrypt from "bcryptjs"
+import { randomBytes } from "crypto"
 
 const prisma = new PrismaClient()
 
 async function main() {
-  const adminPassword = await bcrypt.hash("admin123", 12)
-  const userPassword = await bcrypt.hash("user123", 12)
+  const placeholderPassword = randomBytes(32).toString("hex")
 
   const admin = await prisma.user.upsert({
     where: { email: "admin@ecobin.com" },
@@ -13,7 +12,7 @@ async function main() {
     create: {
       email: "admin@ecobin.com",
       name: "Admin",
-      password: adminPassword,
+      password: placeholderPassword,
       role: "ADMIN",
     },
   })
@@ -24,7 +23,7 @@ async function main() {
     create: {
       email: "user@ecobin.com",
       name: "User",
-      password: userPassword,
+      password: placeholderPassword,
       role: "USER",
     },
   })

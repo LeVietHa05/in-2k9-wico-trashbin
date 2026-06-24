@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { signOut, useSession } from "next-auth/react"
 import { L } from "@/lib/lang"
 
 const userLinks = [
@@ -20,10 +19,7 @@ const adminLinks = [
 
 export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname()
-  const { data: session } = useSession()
-  const role = (session?.user)?.role
-  const isAdmin = role === "ADMIN"
-  const links = isAdmin ? adminLinks : userLinks
+  const links = userLinks
 
   function handleNav() {
     onClose?.()
@@ -68,23 +64,17 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () =>
       <div className="p-3 border-t border-gray-100">
         <div className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600">
           <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-semibold text-xs">
-            {session?.user?.name?.charAt(0)?.toUpperCase() || "U"}
+            U
           </div>
           <div className="flex-1 min-w-0">
             <p className="truncate font-medium text-gray-900">
-              {session?.user?.name}
+              User
             </p>
             <p className="text-xs text-gray-500 truncate">
-              {isAdmin ? L.navRoleAdmin : L.navRoleUser}
+              {L.navRoleUser}
             </p>
           </div>
         </div>
-        <button
-          onClick={() => signOut({ callbackUrl: "/" })}
-          className="w-full mt-1 px-3 py-2 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left"
-        >
-          {L.navSignOut}
-        </button>
       </div>
     </>
   )

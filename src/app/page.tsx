@@ -8,16 +8,10 @@ export default function Home() {
         <h1 className="text-lg sm:text-xl font-bold text-emerald-700">🌱 EcoBin Monitor</h1>
         <div className="flex gap-3">
           <Link
-            href="/login"
-            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors"
-          >
-            {L.landingLogin}
-          </Link>
-          <Link
-            href="/register"
+            href="/user/dashboard"
             className="px-4 py-2 text-sm font-medium bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
           >
-            {L.landingSignUp}
+            {L.landingLogin}
           </Link>
         </div>
       </header>
@@ -46,7 +40,7 @@ export default function Home() {
             </div>
           </div>
           <Link
-            href="/register"
+            href="/user/dashboard"
             className="inline-flex items-center px-5 sm:px-6 py-2.5 sm:py-3 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-200 text-sm sm:text-base"
           >
             {L.landingGetStarted}

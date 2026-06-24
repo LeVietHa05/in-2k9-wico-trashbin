@@ -1,18 +1,19 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { requireAuth } from "@/lib/auth"
 import { classifyWaste } from "@/lib/gemini"
 
 export async function POST(request: Request) {
-  const a = await requireAuth()
-  if ("error" in a) return a.error
-
   try {
     const formData = await request.formData()
     const file = formData.get("image") as File
+    const userId = formData.get("userId") as string
 
     if (!file) {
       return NextResponse.json({ error: "No image provided" }, { status: 400 })
+    }
+
+    if (!userId) {
+      return NextResponse.json({ error: "userId is required" }, { status: 400 })
     }
 
     const bytes = await file.arrayBuffer()
@@ -23,7 +24,7 @@ export async function POST(request: Request) {
 
     const scan = await prisma.scan.create({
       data: {
-        userId: a.user.id,
+        userId,
         imageUrl: `data:${file.type};base64,${base64}`,
         result: result.type,
         confidence: result.confidence,

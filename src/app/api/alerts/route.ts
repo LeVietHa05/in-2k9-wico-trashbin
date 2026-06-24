@@ -1,11 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { requireAuth } from "@/lib/auth"
 
 export async function GET() {
-  const a = await requireAuth()
-  if ("error" in a) return a.error
-
   const alerts = await prisma.alert.findMany({
     include: {
       bin: {
@@ -31,9 +27,6 @@ export async function GET() {
 }
 
 export async function PATCH(request: Request) {
-  const a = await requireAuth()
-  if ("error" in a) return a.error
-
   const body = await request.json()
   const { alertId } = body
 

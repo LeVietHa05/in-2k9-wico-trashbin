@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
-import { useSession } from "next-auth/react"
 import { BinData, AlertData } from "@/types"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { GasGauge } from "@/components/sensors/GasGauge"
@@ -30,7 +29,6 @@ const LocationPicker = dynamic(
 )
 
 export default function UserDashboard() {
-  const { data: session } = useSession()
   const [bins, setBins] = useState<BinData[]>([])
   const [alerts, setAlerts] = useState<AlertData[]>([])
   const [showForm, setShowForm] = useState(false)
@@ -104,7 +102,7 @@ export default function UserDashboard() {
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{L.userDashboardTitle}</h1>
           <p className="text-sm text-gray-500">
-            {L.userDashboardWelcome(session?.user?.name || "")}
+            {L.userDashboardWelcome("User")}
           </p>
         </div>
         <Button onClick={() => setShowForm(!showForm)} variant="secondary" size="sm" className="shrink-0">

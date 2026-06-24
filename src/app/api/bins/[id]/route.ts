@@ -1,14 +1,10 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { requireAuth } from "@/lib/auth"
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const a = await requireAuth()
-  if ("error" in a) return a.error
-
   const { id } = await params
 
   const bin = await prisma.bin.findUnique({
@@ -36,9 +32,6 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const a = await requireAuth({ admin: true })
-  if ("error" in a) return a.error
-
   const { id } = await params
   const body = await request.json()
 
@@ -59,9 +52,6 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const a = await requireAuth({ admin: true })
-  if ("error" in a) return a.error
-
   const { id } = await params
   await prisma.bin.delete({ where: { id } })
 

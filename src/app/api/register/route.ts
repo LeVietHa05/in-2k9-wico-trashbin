@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server"
-import bcrypt from "bcryptjs"
+import { randomBytes } from "crypto"
 import { prisma } from "@/lib/prisma"
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password } = await request.json()
+    const { name, email, password: _password } = await request.json()
 
-    if (!name || !email || !password) {
+    if (!name || !email) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -24,13 +24,11 @@ export async function POST(request: Request) {
       )
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12)
-
     const user = await prisma.user.create({
       data: {
         name,
         email,
-        password: hashedPassword,
+        password: randomBytes(32).toString("hex"),
         role: "USER",
       },
     })

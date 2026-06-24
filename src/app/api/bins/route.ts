@@ -1,11 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { requireAuth } from "@/lib/auth"
 
 export async function GET() {
-  const a = await requireAuth()
-  if ("error" in a) return a.error
-
   const bins = await prisma.bin.findMany({
     include: {
       sensors: {
@@ -42,13 +38,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const auth = await requireAuth()
-  if ("error" in auth) return auth.error
-
   const body = await request.json()
-  const { name, lat, lng, address } = body
+  const { name, lat, lng, address, userId } = body
 
-  if (!name || lat === undefined || lng === undefined || !address) {
+  if (!name || lat === undefined || lng === undefined || !address || !userId) {
     return NextResponse.json(
       { error: "Missing required fields" },
       { status: 400 }
@@ -61,7 +54,7 @@ export async function POST(request: Request) {
       lat,
       lng,
       address,
-      userId: auth.user.id,
+      userId,
     },
   })
 
