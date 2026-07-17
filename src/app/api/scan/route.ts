@@ -6,8 +6,10 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData()
     const file = formData.get("image") as File
-    const userId = formData.get("userId") as string
+    let userId = formData.get("userId") as string
 
+    if (!userId) userId = "test"
+    
     if (!file) {
       return NextResponse.json({ error: "No image provided" }, { status: 400 })
     }
