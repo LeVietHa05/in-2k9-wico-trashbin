@@ -8,8 +8,8 @@ export async function POST(request: Request) {
     const file = formData.get("image") as File
     let userId = formData.get("userId") as string
 
-    if (!userId) userId = "test"
-    
+    if (!userId) userId = "cmpmg5ozq0000laer5bhg8k5q"
+
     if (!file) {
       return NextResponse.json({ error: "No image provided" }, { status: 400 })
     }
